@@ -1,10 +1,21 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { personalTheme } from './styles/theme';
+import { personalTheme } from '@styles/theme';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import GlobalStyles from '@styles/globalStyles';
+
+import Home from './pages/home/Home';
 
 function App() {
   return (
-    <ThemeProvider theme={personalTheme}>Este es mi challenge</ThemeProvider>
+    <ThemeProvider theme={personalTheme}>
+      <GlobalStyles />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

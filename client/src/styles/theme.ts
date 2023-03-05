@@ -124,6 +124,12 @@ interface PersonalTheme extends DefaultTheme {
       '2': string;
     };
   };
+  breakpoints: {
+    small: string;
+    medium: string;
+    large: string;
+    extraLarge: string;
+  };
 }
 
 export const personalTheme: PersonalTheme = {
@@ -249,5 +255,11 @@ export const personalTheme: PersonalTheme = {
       '1': '#176FEB70',
       '2': '#FF80FF70'
     }
+  },
+  breakpoints: {
+    small: '576px',
+    medium: '768px',
+    large: '992px',
+    extraLarge: '1200px'
   }
 };
