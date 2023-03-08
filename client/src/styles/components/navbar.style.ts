@@ -12,6 +12,7 @@ export const NavbarContainer = styled.header`
   height: 128px;
   width: 95vw;
   max-width: 1464px;
+  z-index: 3;
 
   left: 50%;
   transform: translate(-50%, 0%);
@@ -45,7 +46,7 @@ export const Logo = styled.div`
   }
 `;
 
-export const AeroCoins = styled.button`
+export const AeroCoins = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: row;

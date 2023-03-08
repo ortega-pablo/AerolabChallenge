@@ -52,8 +52,6 @@ export const IllustrationIMG = styled.div`
 export const BottomCard = styled.div`
   box-sizing: border-box;
 
-  /* Auto layout */
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -118,7 +116,7 @@ export const IconWrapper = styled.div`
 `;
 
 export const Title = styled.div`
-  width: 198px;
+  width: 250px;
   height: 32px;
 
   font-size: ${(props) => props.theme.typography.fontSize.headings.l3.desktop};

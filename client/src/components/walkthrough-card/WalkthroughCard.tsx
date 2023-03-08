@@ -7,7 +7,7 @@ import {
   Title,
   TitleAndIcon,
   TopCard
-} from '@/styles/components/WalkthroughCard.style';
+} from '@/styles/components/walkthroughCard.style';
 import React from 'react';
 
 interface Props {

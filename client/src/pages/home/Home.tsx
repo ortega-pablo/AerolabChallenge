@@ -11,10 +11,22 @@ import {
   LandingCopy,
   LandingResume,
   LandingSection,
+  ProductSection,
+  ProductSectionContent,
+  ProductsList,
+  ProductsHead,
+  ProductsEnd,
   WalkthroughCards,
   WalkthroughCardsBG,
   WalkthroughSection,
-  WavePattern
+  WavePattern,
+  ProductsNav,
+  ProductsMenu,
+  ProductsFilter,
+  ProductsSort,
+  FilterSelect,
+  Pager,
+  FooterSection
 } from '@/styles/pages/home.style';
 import WalkthroughCard from '@/components/walkthrough-card';
 import walkthrough1 from '../../assets/walkthrough-1-desktop.svg';
@@ -25,11 +37,224 @@ import arrowIcon from '../../assets/icons/arrowIcon.svg';
 import starsIcon from '../../assets/icons/starsIcon.svg';
 import bannerImage from '../../assets/hero-desktop.svg';
 import { CgArrowDown } from 'react-icons/cg';
+import { IoIosArrowDown } from 'react-icons/io';
+import { IoIosArrowBack } from 'react-icons/io';
+import { IoIosArrowForward } from 'react-icons/io';
+import ProductCard from '@/components/productCard';
+import Footer from '@/components/footer';
 
 const Home: React.FC = () => {
+  const products = [
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/MacbookPro-x2.png'
+      },
+      _id: '5a0b35df734d1d08bf7084cb',
+      name: 'Macbook Pro',
+      cost: 1300,
+      category: 'Laptops',
+      state: 'processing'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x2.png'
+      },
+      _id: '5a0b3600734d1d08bf7084e5',
+      name: 'Canon EOS 5D',
+      cost: 2200,
+      category: 'Cameras',
+      state: 'default'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x2.png'
+      },
+      _id: '5a0b3658734d1d08bf70850f',
+      name: 'Amazon Echo',
+      cost: 150,
+      category: 'Smart Home',
+      state: 'disabled'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x2.png'
+      },
+      _id: '5a0b35f0734d1d08bf7084df',
+      name: 'Marshall Major ll',
+      cost: 300,
+      category: 'Audio',
+      state: 'default'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/MacbookPro-x2.png'
+      },
+      _id: '5a0b35df734d1d08bf7084cb',
+      name: 'Macbook Pro',
+      cost: 1300,
+      category: 'Laptops',
+      state: 'processing'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x2.png'
+      },
+      _id: '5a0b3600734d1d08bf7084e5',
+      name: 'Canon EOS 5D',
+      cost: 2200,
+      category: 'Cameras',
+      state: 'default'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x2.png'
+      },
+      _id: '5a0b3658734d1d08bf70850f',
+      name: 'Amazon Echo',
+      cost: 150,
+      category: 'Smart Home',
+      state: 'disabled'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x2.png'
+      },
+      _id: '5a0b35f0734d1d08bf7084df',
+      name: 'Marshall Major ll',
+      cost: 300,
+      category: 'Audio',
+      state: 'default'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/MacbookPro-x2.png'
+      },
+      _id: '5a0b35df734d1d08bf7084cb',
+      name: 'Macbook Pro',
+      cost: 1300,
+      category: 'Laptops',
+      state: 'processing'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x2.png'
+      },
+      _id: '5a0b3600734d1d08bf7084e5',
+      name: 'Canon EOS 5D',
+      cost: 2200,
+      category: 'Cameras',
+      state: 'default'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x2.png'
+      },
+      _id: '5a0b3658734d1d08bf70850f',
+      name: 'Amazon Echo',
+      cost: 150,
+      category: 'Smart Home',
+      state: 'disabled'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x2.png'
+      },
+      _id: '5a0b35f0734d1d08bf7084df',
+      name: 'Marshall Major ll',
+      cost: 300,
+      category: 'Audio',
+      state: 'default'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/MacbookPro-x2.png'
+      },
+      _id: '5a0b35df734d1d08bf7084cb',
+      name: 'Macbook Pro',
+      cost: 1300,
+      category: 'Laptops',
+      state: 'processing'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x2.png'
+      },
+      _id: '5a0b3600734d1d08bf7084e5',
+      name: 'Canon EOS 5D',
+      cost: 2200,
+      category: 'Cameras',
+      state: 'default'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x2.png'
+      },
+      _id: '5a0b3658734d1d08bf70850f',
+      name: 'Amazon Echo',
+      cost: 150,
+      category: 'Smart Home',
+      state: 'disabled'
+    },
+    {
+      img: {
+        url: 'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x1.png',
+        hdUrl:
+          'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x2.png'
+      },
+      _id: '5a0b35f0734d1d08bf7084df',
+      name: 'Marshall Major ll',
+      cost: 300,
+      category: 'Audio',
+      state: 'default'
+    }
+  ];
+  let distance: string;
+
+  if (products.length < 5) {
+    distance = '2720px';
+  } else if (products.length < 9) {
+    distance = '3306px';
+  } else if (products.length < 13) {
+    distance = '3900px';
+  } else if (products.length <= 16) {
+    distance = '4478px';
+  } else {
+    distance = '2720px';
+  }
   return (
     <HomeContainer>
       <WavePattern />
+
       <LandingSection>
         <Navbar />
 
@@ -65,6 +290,7 @@ const Home: React.FC = () => {
           </Illustration>
         </IllustrationContainer>
       </LandingSection>
+
       <WalkthroughSection>
         <WalkthroughCards>
           <div className="left">
@@ -100,6 +326,118 @@ const Home: React.FC = () => {
         </WalkthroughCards>
         <WalkthroughCardsBG />
       </WalkthroughSection>
+
+      <ProductSection>
+        <ProductSectionContent>
+          <ProductsHead>
+            <div className="title">
+              {' '}
+              <p>
+                tech <span>products</span>
+              </p>
+            </div>
+            <ProductsNav>
+              <ProductsMenu>
+                <ProductsFilter>
+                  <p>Filter by:</p>
+                  <FilterSelect>
+                    <div className="select-btn">
+                      <span className="btn-text">All Products</span>
+                      <i>
+                        <IoIosArrowDown style={{ verticalAlign: 'middle' }} />
+                      </i>
+                    </div>
+                    <ul className="options close">
+                      <li className="option">All Products</li>
+                      <li className="option">Audio</li>
+                      <li className="option">Cameras</li>
+                      <li className="option">Drones</li>
+                      <li className="option">Gaming</li>
+                      <li className="option">Laptops</li>
+                      <li className="option">Monitors & TV</li>
+                      <li className="option">PC Accessories</li>
+                      <li className="option">Phone Accessories</li>
+                      <li className="option">Phones</li>
+                      <li className="option">Smart Home</li>
+                      <li className="option">Tablets & E-readers</li>
+                    </ul>
+                  </FilterSelect>
+                </ProductsFilter>
+
+                <div className="bar" />
+
+                <ProductsSort>
+                  <p>Sort by:</p>
+                  <div className="sort-buttons">
+                    <button className="selected">
+                      {' '}
+                      <span>Most Recent</span>{' '}
+                    </button>
+                    <button className="not-selected">
+                      <span>Lowest Price</span>
+                    </button>
+                    <button className="not-selected">
+                      <span>Highest Price</span>
+                    </button>
+                  </div>
+                </ProductsSort>
+              </ProductsMenu>
+              <div className="pager">
+                <Pager>
+                  <div className="prev disabled">
+                    <IoIosArrowBack />
+                  </div>
+                  <div className="text">
+                    Page <span>1 de 2</span>
+                  </div>
+                  <div className="next enabled">
+                    <IoIosArrowForward />
+                  </div>
+                </Pager>
+              </div>
+            </ProductsNav>
+          </ProductsHead>
+
+          <ProductsList>
+            {products.map((product, index) => {
+              return (
+                <>
+                  <ProductCard
+                    img={product.img}
+                    _id={product._id}
+                    name={product.name}
+                    cost={product.cost}
+                    category={product.category}
+                    state={product.state}
+                  />
+                </>
+              );
+            })}
+          </ProductsList>
+
+          <ProductsEnd>
+            <div className="empty"></div>
+            <div className="text">
+              <span>16 of 32</span> products
+            </div>
+            <Pager>
+              <div className="prev disabled">
+                <IoIosArrowBack />
+              </div>
+              <div className="text">
+                Page <span>1 de 2</span>
+              </div>
+              <div className="next enabled">
+                <IoIosArrowForward />
+              </div>
+            </Pager>
+          </ProductsEnd>
+        </ProductSectionContent>
+      </ProductSection>
+
+      <FooterSection distance={distance}>
+        <Footer></Footer>
+      </FooterSection>
     </HomeContainer>
   );
 };
