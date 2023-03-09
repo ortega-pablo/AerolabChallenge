@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '@components/navbar';
 import {
   CallToAction,
@@ -42,215 +42,37 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { IoIosArrowForward } from 'react-icons/io';
 import ProductCard from '@/components/productCard';
 import Footer from '@/components/footer';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { getProducts, setProductsState } from '@/store/slices/products.slice';
+import { RootState } from '@/store/store';
 
 const Home: React.FC = () => {
-  const products = [
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/MacbookPro-x2.png'
-      },
-      _id: '5a0b35df734d1d08bf7084cb',
-      name: 'Macbook Pro',
-      cost: 1300,
-      category: 'Laptops',
-      state: 'processing'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x2.png'
-      },
-      _id: '5a0b3600734d1d08bf7084e5',
-      name: 'Canon EOS 5D',
-      cost: 2200,
-      category: 'Cameras',
-      state: 'default'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x2.png'
-      },
-      _id: '5a0b3658734d1d08bf70850f',
-      name: 'Amazon Echo',
-      cost: 150,
-      category: 'Smart Home',
-      state: 'disabled'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x2.png'
-      },
-      _id: '5a0b35f0734d1d08bf7084df',
-      name: 'Marshall Major ll',
-      cost: 300,
-      category: 'Audio',
-      state: 'default'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/MacbookPro-x2.png'
-      },
-      _id: '5a0b35df734d1d08bf7084cb',
-      name: 'Macbook Pro',
-      cost: 1300,
-      category: 'Laptops',
-      state: 'processing'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x2.png'
-      },
-      _id: '5a0b3600734d1d08bf7084e5',
-      name: 'Canon EOS 5D',
-      cost: 2200,
-      category: 'Cameras',
-      state: 'default'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x2.png'
-      },
-      _id: '5a0b3658734d1d08bf70850f',
-      name: 'Amazon Echo',
-      cost: 150,
-      category: 'Smart Home',
-      state: 'disabled'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x2.png'
-      },
-      _id: '5a0b35f0734d1d08bf7084df',
-      name: 'Marshall Major ll',
-      cost: 300,
-      category: 'Audio',
-      state: 'default'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/MacbookPro-x2.png'
-      },
-      _id: '5a0b35df734d1d08bf7084cb',
-      name: 'Macbook Pro',
-      cost: 1300,
-      category: 'Laptops',
-      state: 'processing'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x2.png'
-      },
-      _id: '5a0b3600734d1d08bf7084e5',
-      name: 'Canon EOS 5D',
-      cost: 2200,
-      category: 'Cameras',
-      state: 'default'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x2.png'
-      },
-      _id: '5a0b3658734d1d08bf70850f',
-      name: 'Amazon Echo',
-      cost: 150,
-      category: 'Smart Home',
-      state: 'disabled'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x2.png'
-      },
-      _id: '5a0b35f0734d1d08bf7084df',
-      name: 'Marshall Major ll',
-      cost: 300,
-      category: 'Audio',
-      state: 'default'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/MacbookPro-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/MacbookPro-x2.png'
-      },
-      _id: '5a0b35df734d1d08bf7084cb',
-      name: 'Macbook Pro',
-      cost: 1300,
-      category: 'Laptops',
-      state: 'processing'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/CanonEOS5D-x2.png'
-      },
-      _id: '5a0b3600734d1d08bf7084e5',
-      name: 'Canon EOS 5D',
-      cost: 2200,
-      category: 'Cameras',
-      state: 'default'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/AmazonEcho-x2.png'
-      },
-      _id: '5a0b3658734d1d08bf70850f',
-      name: 'Amazon Echo',
-      cost: 150,
-      category: 'Smart Home',
-      state: 'disabled'
-    },
-    {
-      img: {
-        url: 'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x1.png',
-        hdUrl:
-          'https://coding-challenge-api.aerolab.co/images/MarshallMajorll-x2.png'
-      },
-      _id: '5a0b35f0734d1d08bf7084df',
-      name: 'Marshall Major ll',
-      cost: 300,
-      category: 'Audio',
-      state: 'default'
-    }
-  ];
+  const products = useAppSelector((state: RootState) => state.products.list);
+  const statusProducts = useAppSelector(
+    (state: RootState) => state.products.status
+  );
+  const dispatch = useAppDispatch();
+  const coins = 10000
+
+  const seeProducts = products.slice(0,16);
+console.log(seeProducts)
   let distance: string;
 
-  if (products.length < 5) {
+  if (seeProducts.length < 5) {
     distance = '2720px';
-  } else if (products.length < 9) {
+  } else if (seeProducts.length < 9) {
     distance = '3306px';
-  } else if (products.length < 13) {
+  } else if (seeProducts.length >= 9 && seeProducts.length < 13) {
     distance = '3900px';
-  } else if (products.length <= 16) {
+  } else if (seeProducts.length >= 13 && seeProducts.length <= 16) {
     distance = '4478px';
   } else {
     distance = '2720px';
   }
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
   return (
     <HomeContainer>
       <WavePattern />
@@ -399,16 +221,19 @@ const Home: React.FC = () => {
           </ProductsHead>
 
           <ProductsList>
-            {products.map((product, index) => {
+            {seeProducts.map((product, index) => {
+              let state: string
+              (Number(product.cost) <= coins) ? ( state='default' ) : ( state='disabled' )
               return (
                 <>
                   <ProductCard
+                  key={index}
                     img={product.img}
                     _id={product._id}
                     name={product.name}
-                    cost={product.cost}
+                    cost={Number(product.cost)}
                     category={product.category}
-                    state={product.state}
+                    state={state}
                   />
                 </>
               );
