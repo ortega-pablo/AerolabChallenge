@@ -43,36 +43,48 @@ import { IoIosArrowForward } from 'react-icons/io';
 import ProductCard from '@/components/productCard';
 import Footer from '@/components/footer';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { getProducts, setProductsState } from '@/store/slices/products.slice';
+import { getProducts } from '@/store/slices/products.slice';
 import { RootState } from '@/store/store';
+import Spinner from '@/components/spinner';
 
 const Home: React.FC = () => {
   const products = useAppSelector((state: RootState) => state.products.list);
   const statusProducts = useAppSelector(
     (state: RootState) => state.products.status
   );
+  const userPoints = useAppSelector((state: RootState) => state.user.user.points);
+  const statusUser = useAppSelector(
+    (state: RootState) => state.user.status
+  );
   const dispatch = useAppDispatch();
-  const coins = 10000
 
-  const seeProducts = products.slice(0,16);
-console.log(seeProducts)
+
+  const seeProducts = products.slice(0, 16);
+  console.log(seeProducts);
   let distance: string;
 
-  if (seeProducts.length < 5) {
-    distance = '2720px';
-  } else if (seeProducts.length < 9) {
-    distance = '3306px';
-  } else if (seeProducts.length >= 9 && seeProducts.length < 13) {
-    distance = '3900px';
-  } else if (seeProducts.length >= 13 && seeProducts.length <= 16) {
-    distance = '4478px';
-  } else {
-    distance = '2720px';
+  switch (true) {
+    case seeProducts.length > 0 && seeProducts.length < 5:
+      distance = '2720px';
+      break;
+    case seeProducts.length >= 5 && seeProducts.length < 9:
+      distance = '3306px';
+      break;
+    case seeProducts.length >= 9 && seeProducts.length < 13:
+      distance = '3900px';
+      break;
+    case seeProducts.length >= 13 && seeProducts.length <= 16:
+      distance = '4478px';
+      break;
+    default:
+      distance = '2220px';
+      break;
   }
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
+
   return (
     <HomeContainer>
       <WavePattern />
@@ -221,23 +233,24 @@ console.log(seeProducts)
           </ProductsHead>
 
           <ProductsList>
-            {seeProducts.map((product, index) => {
-              let state: string
-              (Number(product.cost) <= coins) ? ( state='default' ) : ( state='disabled' )
-              return (
-                <>
-                  <ProductCard
-                  key={index}
-                    img={product.img}
-                    _id={product._id}
-                    name={product.name}
-                    cost={Number(product.cost)}
-                    category={product.category}
-                    state={state}
-                  />
-                </>
-              );
-            })}
+            {statusProducts === 'resolved' ? (
+              seeProducts.map((product, index) => {
+                return (
+                  <>
+                    <ProductCard
+                      key={product._id}
+                      img={product.img}
+                      _id={product._id}
+                      name={product.name}
+                      cost={Number(product.cost)}
+                      category={product.category}
+                    />
+                  </>
+                );
+              })
+            ) : (
+              <Spinner />
+            )}
           </ProductsList>
 
           <ProductsEnd>

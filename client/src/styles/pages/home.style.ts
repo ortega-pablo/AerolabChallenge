@@ -636,6 +636,7 @@ export const ProductsSort = styled.div`
 
 export const ProductsList = styled.div`
   display: flex;
+  justify-content: center;
   align-items: flex-start;
   padding: 0px;
   gap: 80px 24px;
