@@ -34,3 +34,17 @@ export interface postRedeem {
 export interface responsePostRedeem {
   message: "You've redeem the product successfully",
 }
+
+export type Categories =
+  | 'All Products'
+  | 'Audio'
+  | 'Cameras'
+  | 'Drones'
+  | 'Gaming'
+  | 'Laptops'
+  | 'Monitors & TV'
+  | 'PC Accessories'
+  | 'Phone Accessories'
+  | 'Phones'
+  | 'Smart Home'
+  | 'Tablets & E-readers';

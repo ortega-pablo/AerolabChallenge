@@ -1,10 +1,11 @@
-import { ProductApi } from '@/types/types';
+import { Categories, ProductApi } from '@/types/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppDispatch, RootState } from '../store';
 import axios, { AxiosError } from 'axios';
 
 interface ProductsState {
-  list: ProductApi[];
+  allProducts: ProductApi[];
+  orderedProducts: ProductApi[];
   status: 'initial' | 'loading' | 'resolved' | 'rejected';
   pagination: {
     currentPage: number;
@@ -14,13 +15,14 @@ interface ProductsState {
     finalIndex: number;
   };
   filters: {
-    category?: string;
-    sort?: '' | 'mostRecent' | 'lowestPrice' | 'highestPrice';
+    category?: Categories;
+    sort?: '' | 'name' | 'lowestPrice' | 'highestPrice';
   };
 }
 
 const initialState: ProductsState = {
-  list: [],
+  allProducts: [],
+  orderedProducts: [],
   status: 'initial',
   pagination: {
     currentPage: 1,
@@ -29,7 +31,10 @@ const initialState: ProductsState = {
     initIndex: 0,
     finalIndex: 0
   },
-  filters: {}
+  filters: {
+    category: 'Cameras',
+    sort: 'highestPrice'
+  }
 };
 
 const productsSlice = createSlice({
@@ -58,7 +63,8 @@ export const getProducts = () => {
     try {
       dispatch(
         setProductsState({
-          list: [],
+          allProducts: [],
+          orderedProducts: [],
           status: 'loading',
           pagination,
           filters
@@ -77,21 +83,58 @@ export const getProducts = () => {
       );
       const productsResponse = res.data;
 
+      let orderedProducts: ProductApi[];
+
+      if (filters.category === 'All Products') {
+        orderedProducts = productsResponse;
+      } else {
+        console.log('Estoy en el else de categories');
+        orderedProducts = productsResponse.filter((product: ProductApi) => {
+          return product.category === filters.category;
+        });
+        console.log(orderedProducts);
+      }
+
+      switch (filters.sort) {
+        case 'name':
+          orderedProducts.sort((a, b) => {
+            const A = a.name.toUpperCase();
+            const B = b.name.toUpperCase();
+            if (A < B) {
+              return -1;
+            }
+            if (A > B) {
+              return 1;
+            }
+            return 0;
+          });
+          break;
+        case 'lowestPrice':
+          orderedProducts.sort((a, b) => {
+            return Number(a.cost) - Number(b.cost);
+          });
+          break;
+        case 'highestPrice':
+          orderedProducts.sort((a, b) => {
+            return Number(b.cost) - Number(a.cost);
+          });
+          break;
+        default:
+          break;
+      }
+
       const totalPages = Math.ceil(
-        productsResponse.length / pagination.pageSize
+        orderedProducts.length / pagination.pageSize
       );
       const initIndex = (pagination.currentPage - 1) * pagination.pageSize;
       const finalIndex = initIndex + pagination.pageSize;
-      const products = productsResponse.slice(initIndex, finalIndex);
 
-      console.log('productsResponse',productsResponse)
-      console.log('totalPages',totalPages)
-      console.log('initIndex',initIndex)
-      console.log('finalIndex',finalIndex)
-      console.log('products',products)
+      const products = orderedProducts.slice(initIndex, finalIndex);
+
       dispatch(
         setProductsState({
-          list: products,
+          allProducts: productsResponse,
+          orderedProducts: products,
           status: 'resolved',
           pagination: {
             currentPage: pagination.currentPage,
@@ -111,27 +154,61 @@ export const getProducts = () => {
 };
 
 export const setCurrentPage = (newPage: number) => {
-    return async (dispatch: AppDispatch, getState: () => RootState) => {
-      const { totalPages, pageSize } = getState().products.pagination;
-      const initIndex = (newPage - 1) * pageSize;
-      const finalIndex = initIndex + pageSize;
-      console.log('total pages: ', totalPages);
-      try {
-        dispatch(
-          setPagination({
-            currentPage: newPage,
-            totalPages,
-            pageSize,
-            initIndex,
-            finalIndex
-          })
-        );
-        dispatch(getProducts()); // actualizar la lista de productos
-      } catch (error) {
-        if (error instanceof AxiosError) console.error(error.message);
-        else console.error(error);
-      }
-    };
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { totalPages, pageSize } = getState().products.pagination;
+    const initIndex = (newPage - 1) * pageSize;
+    const finalIndex = initIndex + pageSize;
+    console.log('total pages: ', totalPages);
+    try {
+      dispatch(
+        setPagination({
+          currentPage: newPage,
+          totalPages,
+          pageSize,
+          initIndex,
+          finalIndex
+        })
+      );
+      dispatch(getProducts()); // actualizar la allProductsa de productos
+    } catch (error) {
+      if (error instanceof AxiosError) console.error(error.message);
+      else console.error(error);
+    }
   };
+};
+
+export const filterProducts = (sortBy: Categories) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { sort } = getState().products.filters;
+    try {
+      dispatch(
+        setFilters({
+          category: sortBy,
+          sort
+        })
+      );
+      dispatch(getProducts()); //
+    } catch (error) {
+      if (error instanceof AxiosError) console.error(error.message);
+      else console.error(error);
+    }
+  };
+};
 
 export default productsSlice.reducer;
+
+/* interface ProductsState {
+    allProducts: ProductApi[];
+    status: 'initial' | 'loading' | 'resolved' | 'rejected';
+    pagination: {
+      currentPage: number;
+      totalPages: number;
+      pageSize: number;
+      initIndex: number;
+      finalIndex: number;
+    };
+    filters: {
+      category?: string;
+      sort?: '' | 'mostRecent' | 'lowestPrice' | 'highestPrice';
+    };
+  } */

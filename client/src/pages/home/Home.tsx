@@ -20,11 +20,6 @@ import {
   WalkthroughCardsBG,
   WalkthroughSection,
   WavePattern,
-  ProductsNav,
-  ProductsMenu,
-  ProductsFilter,
-  ProductsSort,
-  FilterSelect,
   FooterSection
 } from '@/styles/pages/home.style';
 import WalkthroughCard from '@/components/walkthrough-card';
@@ -36,7 +31,6 @@ import arrowIcon from '../../assets/icons/arrowIcon.svg';
 import starsIcon from '../../assets/icons/starsIcon.svg';
 import bannerImage from '../../assets/hero-desktop.svg';
 import { CgArrowDown } from 'react-icons/cg';
-import { IoIosArrowDown } from 'react-icons/io';
 import ProductCard from '@/components/productCard';
 import Footer from '@/components/footer';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
@@ -44,9 +38,10 @@ import { getProducts } from '@/store/slices/products.slice';
 import { RootState } from '@/store/store';
 import Spinner from '@/components/spinner';
 import Pagination from '@/components/pagination';
+import ProductsNav from '@/components/productsNav';
 
 const Home: React.FC = () => {
-  const products = useAppSelector((state: RootState) => state.products.list);
+  const products = useAppSelector((state: RootState) => state.products.orderedProducts);
   const statusProducts = useAppSelector(
     (state: RootState) => state.products.status
   );
@@ -161,56 +156,7 @@ const Home: React.FC = () => {
                 tech <span>products</span>
               </p>
             </div>
-            <ProductsNav>
-              <ProductsMenu>
-                <ProductsFilter>
-                  <p>Filter by:</p>
-                  <FilterSelect>
-                    <div className="select-btn">
-                      <span className="btn-text">All Products</span>
-                      <i>
-                        <IoIosArrowDown style={{ verticalAlign: 'middle' }} />
-                      </i>
-                    </div>
-                    <ul className="options close">
-                      <li className="option">All Products</li>
-                      <li className="option">Audio</li>
-                      <li className="option">Cameras</li>
-                      <li className="option">Drones</li>
-                      <li className="option">Gaming</li>
-                      <li className="option">Laptops</li>
-                      <li className="option">Monitors & TV</li>
-                      <li className="option">PC Accessories</li>
-                      <li className="option">Phone Accessories</li>
-                      <li className="option">Phones</li>
-                      <li className="option">Smart Home</li>
-                      <li className="option">Tablets & E-readers</li>
-                    </ul>
-                  </FilterSelect>
-                </ProductsFilter>
-
-                <div className="bar" />
-
-                <ProductsSort>
-                  <p>Sort by:</p>
-                  <div className="sort-buttons">
-                    <button className="selected">
-                      {' '}
-                      <span>Most Recent</span>{' '}
-                    </button>
-                    <button className="not-selected">
-                      <span>Lowest Price</span>
-                    </button>
-                    <button className="not-selected">
-                      <span>Highest Price</span>
-                    </button>
-                  </div>
-                </ProductsSort>
-              </ProductsMenu>
-              <div className="pager">
-                <Pagination />
-              </div>
-            </ProductsNav>
+            <ProductsNav />
           </ProductsHead>
 
           <ProductsList>

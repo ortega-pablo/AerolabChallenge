@@ -9,13 +9,6 @@ import coinGrey from '../../assets/icons/aerolabIcon-grey.svg';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { RootState } from '@/store/store';
 import { userAddProduct } from '@/store/slices/user.slice';
-import {
-  postAddPoints,
-  postRedeem,
-  responsePostAddPoints,
-  responsePostRedeem,
-  UserApi
-} from '@/types/types';
 
 interface Props {
   img: {
@@ -65,7 +58,15 @@ const ProductCard: React.FC<Props> = ({
         </div>
       </Card>
       <CTAButton>
-        {stateButton === 'default' ? (
+        {cost > userPoints ? (
+          <button className="disabled">
+            You need{' '}
+            <span>
+              <img src={coinGrey} alt="Coin Icon" />
+            </span>{' '}
+            {cost}
+          </button>
+        ) : stateButton === 'default' ? (
           <button className="default" onClick={() => handleAddProduct(_id)}>
             Redeem for{' '}
             <span>
@@ -90,15 +91,3 @@ const ProductCard: React.FC<Props> = ({
 };
 
 export default ProductCard;
-
-/* {
-  userPoints === "default" ? (
-      <button className='default'>Redeem for <span><img src={coinWhite} alt="Coin Icon" /></span> {cost}</button>
-  ) : (
-      state === "processing" ? (
-          <button className='processing'>Processing...</button>
-      ) : (
-          <button className='disabled'>You need <span><img src={coinGrey} alt="Coin Icon" /></span> {cost}</button>
-      )
-  )
-} */
