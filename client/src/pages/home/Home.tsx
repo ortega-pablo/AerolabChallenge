@@ -25,7 +25,6 @@ import {
   ProductsFilter,
   ProductsSort,
   FilterSelect,
-  Pager,
   FooterSection
 } from '@/styles/pages/home.style';
 import WalkthroughCard from '@/components/walkthrough-card';
@@ -38,42 +37,34 @@ import starsIcon from '../../assets/icons/starsIcon.svg';
 import bannerImage from '../../assets/hero-desktop.svg';
 import { CgArrowDown } from 'react-icons/cg';
 import { IoIosArrowDown } from 'react-icons/io';
-import { IoIosArrowBack } from 'react-icons/io';
-import { IoIosArrowForward } from 'react-icons/io';
 import ProductCard from '@/components/productCard';
 import Footer from '@/components/footer';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { getProducts } from '@/store/slices/products.slice';
 import { RootState } from '@/store/store';
 import Spinner from '@/components/spinner';
+import Pagination from '@/components/pagination';
 
 const Home: React.FC = () => {
   const products = useAppSelector((state: RootState) => state.products.list);
   const statusProducts = useAppSelector(
     (state: RootState) => state.products.status
   );
-  const userPoints = useAppSelector((state: RootState) => state.user.user.points);
-  const statusUser = useAppSelector(
-    (state: RootState) => state.user.status
-  );
   const dispatch = useAppDispatch();
 
-
-  const seeProducts = products.slice(0, 16);
-  console.log(seeProducts);
   let distance: string;
 
   switch (true) {
-    case seeProducts.length > 0 && seeProducts.length < 5:
+    case products.length > 0 && products.length < 5:
       distance = '2720px';
       break;
-    case seeProducts.length >= 5 && seeProducts.length < 9:
+    case products.length >= 5 && products.length < 9:
       distance = '3306px';
       break;
-    case seeProducts.length >= 9 && seeProducts.length < 13:
+    case products.length >= 9 && products.length < 13:
       distance = '3900px';
       break;
-    case seeProducts.length >= 13 && seeProducts.length <= 16:
+    case products.length >= 13 && products.length <= 16:
       distance = '4478px';
       break;
     default:
@@ -217,24 +208,14 @@ const Home: React.FC = () => {
                 </ProductsSort>
               </ProductsMenu>
               <div className="pager">
-                <Pager>
-                  <div className="prev disabled">
-                    <IoIosArrowBack />
-                  </div>
-                  <div className="text">
-                    Page <span>1 de 2</span>
-                  </div>
-                  <div className="next enabled">
-                    <IoIosArrowForward />
-                  </div>
-                </Pager>
+                <Pagination />
               </div>
             </ProductsNav>
           </ProductsHead>
 
           <ProductsList>
             {statusProducts === 'resolved' ? (
-              seeProducts.map((product, index) => {
+              products.map((product) => {
                 return (
                   <>
                     <ProductCard
@@ -258,17 +239,7 @@ const Home: React.FC = () => {
             <div className="text">
               <span>16 of 32</span> products
             </div>
-            <Pager>
-              <div className="prev disabled">
-                <IoIosArrowBack />
-              </div>
-              <div className="text">
-                Page <span>1 de 2</span>
-              </div>
-              <div className="next enabled">
-                <IoIosArrowForward />
-              </div>
-            </Pager>
+            <Pagination />
           </ProductsEnd>
         </ProductSectionContent>
       </ProductSection>

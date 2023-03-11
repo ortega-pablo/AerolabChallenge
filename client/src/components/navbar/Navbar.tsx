@@ -7,7 +7,7 @@ import {
 } from '@styles/components/navbar.style';
 import logo from '../../assets/aerolab-logo.svg';
 import aeroIcon from '../../assets/icons/aerolabIcon-gradient.svg';
-import { IoIosArrowDown } from 'react-icons/io';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { getUser, userAddPoints } from '@/store/slices/user.slice';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { RootState } from '@/store/store';
@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
     (state: RootState) => state.user.user.points
   );
   const userName = useAppSelector((state: RootState) => state.user.user.name);
-  const userStatus = useAppSelector((state: RootState) => state.user.status)
+  const userStatus = useAppSelector((state: RootState) => state.user.status);
   const dispatch = useAppDispatch();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -88,68 +88,72 @@ const Navbar: React.FC = () => {
         <p>aerolab</p>
       </Logo>
       <AeroCoins onClick={() => handleOpen()}>
-        { (userStatus  === "resolved") ? (
+        {userStatus === 'resolved' ? (
           <>
-        <div className="points">
-          <img src={aeroIcon} alt="Aerolab Icon" />
-          <p>{userPoints}</p>
-        </div>
-        <span>
-          <IoIosArrowDown size={'32px'} />
-        </span>
-        <AddPoints
-          className={isOpen ? 'open' : 'closed'}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="header">
-            <p>Add Balance</p>
-          </div>
-          <div className="content">
-            <div className="card-amount">
-              <div className="aerocard">
-                <div className="top">
-                  <span>AeroCard</span>
-                  <span>
-                    <img src={aerolabIconCard} alt="Aero coin " />
-                  </span>
-                </div>
-                <div className="bottom">
-                  <span>{userName}</span>
-                  <span>07/25</span>
-                </div>
-              </div>
-              <div className="CTA-amount">
-                <div className="amounts">
-                  <button
-                    className={add1000 ? 'selector selected' : 'selector'}
-                    onClick={() => handleSet1000()}
-                  >
-                    <span>1000</span>
-                  </button>
-                  <button
-                    className={add5000 ? 'selector selected' : 'selector'}
-                    onClick={() => handleSet5000()}
-                  >
-                    <span>5000</span>
-                  </button>
-                  <button
-                    className={add7500 ? 'selector selected' : 'selector'}
-                    onClick={() => handleSet7500()}
-                  >
-                    <span>7500</span>
-                  </button>
-                </div>
-                <button className="cta" onClick={() => handleAddCoins()}>
-                  <span className="icon">
-                    <img src={aerolabIconWhite} alt="Aero coin " />
-                  </span>
-                  <span className="text">Add Points</span>
-                </button>
-              </div>
-              <div className="amount"></div>
+            <div className="points">
+              <img src={aeroIcon} alt="Aerolab Icon" />
+              <p>{userPoints}</p>
             </div>
-          </div>
-        </AddPoints>
+            <span>
+              {isOpen ? (
+                <IoIosArrowUp size={'32px'} />
+              ) : (
+                <IoIosArrowDown size={'32px'} />
+              )}
+            </span>
+            <AddPoints
+              className={isOpen ? 'open' : 'closed'}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="header">
+                <p>Add Balance</p>
+              </div>
+              <div className="content">
+                <div className="card-amount">
+                  <div className="aerocard">
+                    <div className="top">
+                      <span>AeroCard</span>
+                      <span>
+                        <img src={aerolabIconCard} alt="Aero coin " />
+                      </span>
+                    </div>
+                    <div className="bottom">
+                      <span>{userName}</span>
+                      <span>07/25</span>
+                    </div>
+                  </div>
+                  <div className="CTA-amount">
+                    <div className="amounts">
+                      <button
+                        className={add1000 ? 'selector selected' : 'selector'}
+                        onClick={() => handleSet1000()}
+                      >
+                        <span>1000</span>
+                      </button>
+                      <button
+                        className={add5000 ? 'selector selected' : 'selector'}
+                        onClick={() => handleSet5000()}
+                      >
+                        <span>5000</span>
+                      </button>
+                      <button
+                        className={add7500 ? 'selector selected' : 'selector'}
+                        onClick={() => handleSet7500()}
+                      >
+                        <span>7500</span>
+                      </button>
+                    </div>
+                    <button className="cta" onClick={() => handleAddCoins()}>
+                      <span className="icon">
+                        <img src={aerolabIconWhite} alt="Aero coin " />
+                      </span>
+                      <span className="text">Add Points</span>
+                    </button>
+                  </div>
+                  <div className="amount"></div>
+                </div>
+              </div>
+            </AddPoints>
           </>
         ) : (
           <Spinner />
