@@ -32,7 +32,7 @@ export interface postRedeem {
 }
 
 export interface responsePostRedeem {
-  message: "You've redeem the product successfully",
+  message: "You've redeem the product successfully";
 }
 
 export type Categories =
@@ -48,3 +48,5 @@ export type Categories =
   | 'Phones'
   | 'Smart Home'
   | 'Tablets & E-readers';
+
+export type Sort = '' | 'name' | 'lowestPrice' | 'highestPrice';

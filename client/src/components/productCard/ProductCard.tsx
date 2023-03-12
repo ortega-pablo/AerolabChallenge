@@ -58,7 +58,7 @@ const ProductCard: React.FC<Props> = ({
         </div>
       </Card>
       <CTAButton>
-        {cost > userPoints ? (
+        {userPoints < cost ? (
           <button className="disabled">
             You need{' '}
             <span>
@@ -66,7 +66,7 @@ const ProductCard: React.FC<Props> = ({
             </span>{' '}
             {cost}
           </button>
-        ) : stateButton === 'default' ? (
+        ) : (stateButton === 'default' ? (
           <button className="default" onClick={() => handleAddProduct(_id)}>
             Redeem for{' '}
             <span>
@@ -84,7 +84,7 @@ const ProductCard: React.FC<Props> = ({
             </span>{' '}
             {cost}
           </button>
-        )}
+        ))}
       </CTAButton>
     </CardContainer>
   );

@@ -1,7 +1,7 @@
 import { postAddPoints, postRedeem, responsePostAddPoints, responsePostRedeem, UserApi } from '@/types/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
-import { AppDispatch } from '../store';
+import { AppDispatch, RootState } from '../store';
 
 interface UserState {
   user: UserApi;
@@ -34,18 +34,12 @@ const userSlice = createSlice({
 export const { setUserState } = userSlice.actions;
 
 export const getUser = () => {
-  return async (dispatch: AppDispatch) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { user } = getState().user;
     try {
       dispatch(
         setUserState({
-          user: {
-            _id: '',
-            name: '',
-            points: 0,
-            createDate: '',
-            redeemHistory: [],
-            __v: 0
-          },
+          user,
           status: 'loading'
         })
       );
@@ -76,18 +70,12 @@ export const getUser = () => {
 };
 
 export const userAddPoints = (data: postAddPoints) => {
-  return async (dispatch: AppDispatch) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { user } = getState().user;
     try {
       dispatch(
         setUserState({
-          user: {
-            _id: '',
-            name: '',
-            points: 0,
-            createDate: '',
-            redeemHistory: [],
-            __v: 0
-          },
+          user,
           status: 'loading'
         })
       );
@@ -111,18 +99,12 @@ export const userAddPoints = (data: postAddPoints) => {
 };
 
 export const userAddProduct = (data: postRedeem) => {
-    return async (dispatch: AppDispatch) => {
+    return async (dispatch: AppDispatch, getState: () => RootState) => {
+      const { user } = getState().user;
       try {
         dispatch(
           setUserState({
-            user: {
-              _id: '',
-              name: '',
-              points: 0,
-              createDate: '',
-              redeemHistory: [],
-              __v: 0
-            },
+            user,
             status: 'loading'
           })
         );

@@ -10,7 +10,7 @@ import Pagination from '../pagination';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { Categories } from '@/types/types';
 import { useAppDispatch } from '@/hooks/hooks';
-import { filterProducts } from '@/store/slices/products.slice';
+import { filterProducts, sortProducts } from '@/store/slices/products.slice';
 
 const filters: Categories[] = [
   'All Products',
@@ -30,7 +30,7 @@ const filters: Categories[] = [
 const ProductsNav: React.FC = () => {
   const dispatch = useAppDispatch();
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
-  const [sortRecent, setSortRecent] = useState<boolean>(false);
+  const [sortName, setSortName] = useState<boolean>(false);
   const [sortLowest, setSortLowest] = useState<boolean>(false);
   const [sortHighest, setSortHighest] = useState<boolean>(false);
 
@@ -42,25 +42,37 @@ const ProductsNav: React.FC = () => {
     dispatch(filterProducts(filterBy));
     setFilterOpen(false);
   };
-  const handleSortRecent = () => {
-    setSortRecent(!sortRecent);
-    if (sortRecent === false) {
+  const handleSortName = () => {
+    setSortName(!sortName);
+    if (sortName === false) {
       setSortLowest(false);
       setSortHighest(false);
+      dispatch(sortProducts('name'));
+    }
+    if (sortName === true) {
+      dispatch(sortProducts(''));
     }
   };
   const handleSortLowest = () => {
     setSortLowest(!sortLowest);
     if (sortLowest === false) {
-      setSortRecent(false);
+      setSortName(false);
       setSortHighest(false);
+      dispatch(sortProducts('lowestPrice'));
+    }
+    if (sortLowest === true) {
+      dispatch(sortProducts(''));
     }
   };
   const handleSortHighest = () => {
     setSortHighest(!sortHighest);
     if (sortHighest === false) {
-      setSortRecent(false);
+      setSortName(false);
       setSortLowest(false);
+      dispatch(sortProducts('highestPrice'));
+    }
+    if (sortHighest === true) {
+      dispatch(sortProducts(''));
     }
   };
   return (
@@ -80,8 +92,12 @@ const ProductsNav: React.FC = () => {
               </i>
             </div>
             <ul className={filterOpen ? 'options' : 'options close'}>
-              {filters.map((filter) => (
-                <li className="option" onClick={() => handleFilter(filter)}>
+              {filters.map((filter, index) => (
+                <li
+                  className="option"
+                  key={index}
+                  onClick={() => handleFilter(filter)}
+                >
                   {filter}
                 </li>
               ))}
@@ -95,10 +111,10 @@ const ProductsNav: React.FC = () => {
           <p>Sort by:</p>
           <div className="sort-buttons">
             <button
-              className={sortRecent ? 'selected' : 'not-selected'}
-              onClick={() => handleSortRecent()}
+              className={sortName ? 'selected' : 'not-selected'}
+              onClick={() => handleSortName()}
             >
-              <span>Most Recent</span>
+              <span>Name</span>
             </button>
             <button
               className={sortLowest ? 'selected' : 'not-selected'}

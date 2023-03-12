@@ -1,4 +1,4 @@
-import { Categories, ProductApi } from '@/types/types';
+import { Categories, ProductApi, Sort } from '@/types/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppDispatch, RootState } from '../store';
 import axios, { AxiosError } from 'axios';
@@ -16,7 +16,7 @@ interface ProductsState {
   };
   filters: {
     category?: Categories;
-    sort?: '' | 'name' | 'lowestPrice' | 'highestPrice';
+    sort?: Sort;
   };
 }
 
@@ -32,8 +32,8 @@ const initialState: ProductsState = {
     finalIndex: 0
   },
   filters: {
-    category: 'Cameras',
-    sort: 'highestPrice'
+    category: 'All Products',
+    sort: ''
   }
 };
 
@@ -177,13 +177,13 @@ export const setCurrentPage = (newPage: number) => {
   };
 };
 
-export const filterProducts = (sortBy: Categories) => {
+export const filterProducts = (filter: Categories) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     const { sort } = getState().products.filters;
     try {
       dispatch(
         setFilters({
-          category: sortBy,
+          category: filter,
           sort
         })
       );
@@ -195,20 +195,22 @@ export const filterProducts = (sortBy: Categories) => {
   };
 };
 
-export default productsSlice.reducer;
+export const sortProducts = (sortBy: Sort) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { category } = getState().products.filters;
+    try {
+      dispatch(
+        setFilters({
+          category,
+          sort: sortBy
+        })
+      );
+      dispatch(getProducts()); //
+    } catch (error) {
+      if (error instanceof AxiosError) console.error(error.message);
+      else console.error(error);
+    }
+  };
+};
 
-/* interface ProductsState {
-    allProducts: ProductApi[];
-    status: 'initial' | 'loading' | 'resolved' | 'rejected';
-    pagination: {
-      currentPage: number;
-      totalPages: number;
-      pageSize: number;
-      initIndex: number;
-      finalIndex: number;
-    };
-    filters: {
-      category?: string;
-      sort?: '' | 'mostRecent' | 'lowestPrice' | 'highestPrice';
-    };
-  } */
+export default productsSlice.reducer;
