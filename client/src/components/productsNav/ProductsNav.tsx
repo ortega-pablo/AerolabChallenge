@@ -9,8 +9,9 @@ import React, { useState } from 'react';
 import Pagination from '../pagination';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { Categories } from '@/types/types';
-import { useAppDispatch } from '@/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { filterProducts, sortProducts } from '@/store/slices/products.slice';
+import { RootState } from '@/store/store';
 
 const filters: Categories[] = [
   'All Products',
@@ -28,6 +29,9 @@ const filters: Categories[] = [
 ];
 
 const ProductsNav: React.FC = () => {
+  const { category } = useAppSelector(
+    (state: RootState) => state.products.filters
+  );
   const dispatch = useAppDispatch();
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
   const [sortName, setSortName] = useState<boolean>(false);
@@ -82,7 +86,7 @@ const ProductsNav: React.FC = () => {
           <p>Filter by:</p>
           <FilterSelect>
             <div className="select-btn" onClick={() => handleOpenFilter()}>
-              <span className="btn-text">All Products</span>
+              <span className="btn-text">{category}</span>
               <i>
                 {filterOpen ? (
                   <IoIosArrowUp style={{ verticalAlign: 'middle' }} />
