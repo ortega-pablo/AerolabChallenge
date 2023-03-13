@@ -30,10 +30,11 @@ export const FooterContainer = styled.footer`
     flex-grow: 0;
   }
 
-  span {
+  a {
+    all: unset;
     width: 185px;
     height: 27px;
-
+    
     font-size: ${(props) => props.theme.typography.fontSize.text.l1.desktop};
     font-weight: ${(props) =>
       props.theme.typography.fontWeight.text.l1.desktop};
@@ -41,7 +42,9 @@ export const FooterContainer = styled.footer`
       props.theme.typography.lineHeight.text.l1.desktop};
     color: ${(props) => props.theme.colors.neutral[600]};
     text-align: right;
-
+    
+    cursor: pointer;
+    
     flex: none;
     order: 1;
     flex-grow: 0;

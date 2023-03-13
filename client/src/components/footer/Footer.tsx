@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
     <FooterContainer>
         <div>
             <img src={githubIcon} alt="Github Icon" />
-            <span>View this repository</span>
+            <a href='https://github.com/ortega-pablo/AerolabChallenge' target='_blank'>View this repository</a>
         </div>
     </FooterContainer>
   );

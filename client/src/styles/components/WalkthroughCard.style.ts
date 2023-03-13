@@ -78,10 +78,10 @@ export const TitleAndIcon = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 0px;
+  padding-left: 0;
   gap: 16px;
 
-  width: 262px;
+  width: 310px;
   height: 48px;
 
   flex: none;

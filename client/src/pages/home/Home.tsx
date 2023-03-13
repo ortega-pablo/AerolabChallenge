@@ -41,7 +41,12 @@ import Pagination from '@/components/pagination';
 import ProductsNav from '@/components/productsNav';
 
 const Home: React.FC = () => {
-  const products = useAppSelector((state: RootState) => state.products.orderedProducts);
+  const products = useAppSelector(
+    (state: RootState) => state.products.orderedProducts
+  );
+  const productsQuantity = useAppSelector(
+    (state: RootState) => state.products.productsQuantity
+  );
   const statusProducts = useAppSelector(
     (state: RootState) => state.products.status
   );
@@ -96,10 +101,12 @@ const Home: React.FC = () => {
               </p>
             </LandingResume>
           </LandingCopy>
-          <CTAButton>
-            <p>vew all products</p>
-            <CgArrowDown size={'24px'} />
-          </CTAButton>
+          <a href="#products-section">
+            <CTAButton >
+              <p>vew all products</p>
+              <CgArrowDown size={'24px'} />
+            </CTAButton>
+          </a>
         </CallToAction>
 
         <IllustrationContainer>
@@ -147,7 +154,7 @@ const Home: React.FC = () => {
         <WalkthroughCardsBG />
       </WalkthroughSection>
 
-      <ProductSection>
+      <ProductSection id="products-section">
         <ProductSectionContent>
           <ProductsHead>
             <div className="title">
@@ -183,7 +190,7 @@ const Home: React.FC = () => {
           <ProductsEnd>
             <div className="empty"></div>
             <div className="text">
-              <span>16 of 32</span> products
+              <span>{products.length} of {productsQuantity}</span> products
             </div>
             <Pagination />
           </ProductsEnd>

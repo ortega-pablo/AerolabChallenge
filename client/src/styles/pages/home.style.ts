@@ -31,6 +31,10 @@ export const CallToAction = styled.div`
   top: 240px;
 
   z-index: 1;
+
+  a {
+    all: unset;
+  }
 `;
 
 export const LandingCopy = styled.div`

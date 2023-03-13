@@ -6,6 +6,7 @@ import axios, { AxiosError } from 'axios';
 interface ProductsState {
   allProducts: ProductApi[];
   orderedProducts: ProductApi[];
+  productsQuantity: number;
   status: 'initial' | 'loading' | 'resolved' | 'rejected';
   pagination: {
     currentPage: number;
@@ -23,6 +24,7 @@ interface ProductsState {
 const initialState: ProductsState = {
   allProducts: [],
   orderedProducts: [],
+  productsQuantity: 0,
   status: 'initial',
   pagination: {
     currentPage: 1,
@@ -65,6 +67,7 @@ export const getProducts = () => {
         setProductsState({
           allProducts: [],
           orderedProducts: [],
+          productsQuantity: 0,
           status: 'loading',
           pagination,
           filters
@@ -123,6 +126,8 @@ export const getProducts = () => {
           break;
       }
 
+      const productsQuantity = orderedProducts.length;
+
       const totalPages = Math.ceil(
         orderedProducts.length / pagination.pageSize
       );
@@ -135,6 +140,7 @@ export const getProducts = () => {
         setProductsState({
           allProducts: productsResponse,
           orderedProducts: products,
+          productsQuantity,
           status: 'resolved',
           pagination: {
             currentPage: pagination.currentPage,
